@@ -16,19 +16,12 @@ const options: cors.CorsOptions = {
     credentials: true,
     methods: "GET,OPTIONS,PATCH,POST",
     origin: [
-        "*",
-        "https://infallible-wright-a8d49d.netlify.app",
-        "https://infallible-wright-a8d49d.netlify.app/",
         "https://infallible-wright-a8d49d.netlify.app/login",
-        "https://infallible-wright-a8d49d.netlify.app/home",
-        "https://infallible-wright-a8d49d.netlify.app/home/"
-
+        "https://infallible-wright-a8d49d.netlify.app/home"
     ],
-    preflightContinue: true
+    preflightContinue: false
 };
-
-//use cors middleware
-routes.use(cors(options));
+routes.options("*", cors(options));
 
 routes.get('/', (request: Request, response: Response) => {
     return response.json({ message: "PRONTO CARALHOOOOO !" })
