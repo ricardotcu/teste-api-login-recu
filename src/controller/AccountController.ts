@@ -108,37 +108,35 @@ export const forgotPass = async (req: Request, res: Response) => {
         });
 
         const novaSenha = crypto.randomBytes(4).toString('hex');
-        
-        transporte.sendMail({
-            from: 'administrador <dc1d1eeef9-eb0505@inbox.mailtrap.io>',
-            to: email,
-            subject: "recuperação de senha",
-            html: `<p>óla, sua nova senha para acessar o sistema: ${novaSenha} </p><br /><a href="localhost:3333/session">sistema</a>`
-        }).then(
-            () => {
-                bcrypt.hash(novaSenha, 8).then(
-                    senha => {
-                        getRepository(User).update(user[0].id, {
-                            senha
-                        }).then(
-                            () => {
-                                return res.status(200).json({message: "email enviado"})
-                            }
-                        ).catch(
-                            () => {
-                                return res.status(404).json({message: "user not found"})
-                            }
-                        )
-                    }
-                )
-
-                
-            }
-        ).catch(
-            () => {
-                return res.status(404).json({message: "erro send email"})           
-            }
-        )
+        try {
+            await transporte.sendMail({
+                from: 'administrador <dc1d1eeef9-eb0505@inbox.mailtrap.io>',
+                to: email,
+                subject: "recuperação de senha",
+                html: `<p>óla, sua nova senha para acessar o sistema: ${novaSenha} </p><br /><a href="localhost:3333/session">sistema</a>`
+            }).then(
+                () => {
+                    bcrypt.hash(novaSenha, 8).then(
+                        senha => {
+                            getRepository(User).update(user[0].id, {
+                                senha
+                            }).then(
+                                () => {
+                                    return res.status(200).json({ message: "email enviado" })
+                                }
+                            ).catch(
+                                () => {
+                                    return res.status(404).json({ message: "user not found" })
+                                }
+                            )
+                        }
+                    )
+                    
+                }
+            )
+        } catch (error) {
+            return res.status(404).json({message: "erro send email"})           
+        }
 
     } catch (err) {
         return res.status(402).json({message: "erro user controller"})
