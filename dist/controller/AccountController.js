@@ -140,6 +140,12 @@ const forgotPass = async (req, res) => {
     subject: "recuperação de senha",
     html: `<p>óla, sua nova senha para acessar o sistema: ${novaSenha} </p><br /><a href="localhost:3333/session">sistema</a>`
   });
+  const senha_final = await bcrypt.hash(novaSenha, 8);
+  await (0, _typeorm.getConnection)().createQueryBuilder().update(_User.User).set({
+    senha: senha_final
+  }).where("id = :id", {
+    id: user[0].id
+  }).execute();
   return res.json({
     message: 'aqi porra'
   });
