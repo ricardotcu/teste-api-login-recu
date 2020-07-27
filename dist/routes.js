@@ -18,7 +18,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const routes = (0, _express.Router)();
 routes.use((0, _cors.default)());
 routes.get('/', (request, response) => {
-  console.log('env: ' + process.env.SECRET);
   return response.json({
     message: "PRONTO CARALHOOOOO !"
   });

@@ -28,7 +28,6 @@ const saveUser = async (req, res) => {
     senha,
     senha_confirmacao
   } = req.body;
-  const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
 
   if (senha !== senha_confirmacao) {
     return res.status(404).json({
@@ -45,7 +44,7 @@ const saveUser = async (req, res) => {
     });
     const token_register = jwt.sign({
       nome
-    }, secret, {
+    }, process.env.SECRET, {
       expiresIn: '1d'
     });
     const data = {
@@ -67,6 +66,7 @@ exports.saveUser = saveUser;
 const getHome = async (req, res) => {
   const id = req.params.id;
   const user = await (0, _typeorm.getRepository)(_User.User).findOne({
+    select: ['id', 'nome', 'email'],
     where: {
       id
     }
@@ -81,7 +81,6 @@ const login = async (req, res) => {
     email,
     senha
   } = req.body;
-  const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
 
   try {
     const user = await (0, _typeorm.getRepository)(_User.User).find({
@@ -93,7 +92,7 @@ const login = async (req, res) => {
     if (await bcrypt.compare(senha, user[0].senha)) {
       const token_login = jwt.sign({
         email
-      }, secret, {
+      }, process.env.SECRET, {
         expiresIn: '1d'
       });
       const data = {

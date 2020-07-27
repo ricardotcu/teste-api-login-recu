@@ -8,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 
 export const saveUser = async (req: Request, res: Response) => {
     const { nome, email, senha, senha_confirmacao } = req.body;
-    const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
 
     if(senha !== senha_confirmacao){
         return res.status(404).json({message: "erro senhas diferentes"})
@@ -23,7 +22,7 @@ export const saveUser = async (req: Request, res: Response) => {
             senha: senhaHash
         });
         
-        const token_register = jwt.sign({ nome }, secret, {
+        const token_register = jwt.sign({ nome }, process.env.SECRET, {
             expiresIn: '1d'
         });
 
@@ -45,6 +44,7 @@ export const getHome = async (req: Request, res: Response) => {
     const id  = req.params.id;
    
     const user = await getRepository(User).findOne({
+        select: ['id', 'nome', 'email'],
         where: {
             id
         }
@@ -56,7 +56,6 @@ export const getHome = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     const { email, senha } = req.body;
-    const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
 
     try {
         const user = await getRepository(User).find({
@@ -67,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
 
         if (await bcrypt.compare(senha, user[0].senha)) {
 
-            const token_login = jwt.sign({ email }, secret, {
+            const token_login = jwt.sign({ email }, process.env.SECRET, {
                 expiresIn: '1d'
             });
 

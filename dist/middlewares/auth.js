@@ -13,7 +13,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 const auth = async (req, res, next) => {
   const auth_header = req.headers.authorization;
-  const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
 
   if (!auth_header) {
     return res.status(401).json({
@@ -24,7 +23,7 @@ const auth = async (req, res, next) => {
   const [, token] = auth_header.split(' ');
 
   try {
-    await jwt.verify(token, secret);
+    await jwt.verify(token, process.env.SECRET);
     next();
   } catch (error) {
     return res.status(401).json({
