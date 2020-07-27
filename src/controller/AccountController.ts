@@ -9,7 +9,6 @@ import * as bcrypt from 'bcrypt';
 export const saveUser = async (req: Request, res: Response) => {
     const { nome, email, senha, senha_confirmacao } = req.body;
     const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
-    console.log(nome);
 
     if(senha !== senha_confirmacao){
         return res.status(404).json({message: "erro senhas diferentes"})
@@ -23,7 +22,7 @@ export const saveUser = async (req: Request, res: Response) => {
             email,
             senha: senhaHash
         });
-        console.log(user);
+        
         const token_register = jwt.sign({ nome }, secret, {
             expiresIn: '1d'
         });
@@ -35,7 +34,6 @@ export const saveUser = async (req: Request, res: Response) => {
             token: token_register
         }
         
-        console.log(data);
         return res.status(201).json(data);
 
     } catch (error) {

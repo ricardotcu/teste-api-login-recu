@@ -3,6 +3,7 @@ import * as jwt from 'jsonwebtoken';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     const auth_header = req.headers.authorization;
+    console.log(auth_header)
     
     if(!auth_header){
         return res.status(401).json({message: 'token expirou 1'});

@@ -29,7 +29,6 @@ const saveUser = async (req, res) => {
     senha_confirmacao
   } = req.body;
   const secret = '84edbc64b2e424f48fd21c08e26d9dd9';
-  console.log(nome);
 
   if (senha !== senha_confirmacao) {
     return res.status(404).json({
@@ -44,7 +43,6 @@ const saveUser = async (req, res) => {
       email,
       senha: senhaHash
     });
-    console.log(user);
     const token_register = jwt.sign({
       nome
     }, secret, {
@@ -56,7 +54,6 @@ const saveUser = async (req, res) => {
       email: user.email,
       token: token_register
     };
-    console.log(data);
     return res.status(201).json(data);
   } catch (error) {
     return res.status(402).json({

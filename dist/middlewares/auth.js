@@ -13,6 +13,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 const auth = async (req, res, next) => {
   const auth_header = req.headers.authorization;
+  console.log(auth_header);
 
   if (!auth_header) {
     return res.status(401).json({
