@@ -143,7 +143,7 @@ const forgotPass = async (req, res) => {
   const senha_final = await bcrypt.hash(novaSenha, 8);
   await (0, _typeorm.getConnection)().createQueryBuilder().update(_User.User).set({
     senha: senha_final
-  }).where("id = :id", {
+  }).where({
     id: user[0].id
   }).execute();
   return res.json({
