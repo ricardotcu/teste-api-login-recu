@@ -9,6 +9,7 @@ const routes = Router();
 routes.use(cors());
 
 routes.get('/', (request: Request, response: Response) => {
+    console.log('env: ' + process.env.SECRET)
     return response.json({ message: "PRONTO CARALHOOOOO !" })
 });
 

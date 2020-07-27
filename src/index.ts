@@ -6,11 +6,11 @@ import * as bodyParser from "body-parser";
 import routes from "./routes";
 
 const app = express();
+dotenv.config();
 createConnection();
 
 app.use(bodyParser.json());
 app.use(routes);
 
-dotenv.config();
 
 app.listen(process.env.PORT || 3333);

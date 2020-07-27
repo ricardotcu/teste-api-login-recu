@@ -19,8 +19,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const app = (0, _express.default)();
+dotenv.config();
 (0, _typeorm.createConnection)();
 app.use(bodyParser.json());
 app.use(_routes.default);
-dotenv.config();
 app.listen(process.env.PORT || 3333);
