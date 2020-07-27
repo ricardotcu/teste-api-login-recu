@@ -58,7 +58,7 @@ export const login = async (req: Request, res: Response) => {
     const { email, senha } = req.body;
 
     try {
-        const user = await getRepository(User).find({
+        const user = await getRepository(User).findOne({
             where: {
                 email
             }
@@ -71,9 +71,9 @@ export const login = async (req: Request, res: Response) => {
             });
 
             const data = {
-                id: user[0].id,
-                nome: user[0].nome,
-                email: user[0].email,
+                id: user.id,
+                nome: user.nome,
+                email: user.email,
                 token: token_login
             }
             
