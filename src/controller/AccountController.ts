@@ -100,8 +100,8 @@ export const forgotPass = async (req: Request, res: Response) => {
         host: "smtp.mailtrap.io",
         port: 2525,
         auth: {
-            user: "28b78cc0f74aae",
-            pass: "e1c2632ca9942b"
+            user: process.env.MAILTRAP_USER,
+            pass: process.env.MAILTRAP_PASS
         }
     });
 
@@ -123,5 +123,5 @@ export const forgotPass = async (req: Request, res: Response) => {
     .where({ id: user.id })
     .execute();
 
-    return res.json({message: 'aqi porra'})
+    return res.json({message: 'senha criada e enviado para o mailtrap'})
 }

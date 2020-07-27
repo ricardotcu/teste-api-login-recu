@@ -129,8 +129,8 @@ const forgotPass = async (req, res) => {
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "28b78cc0f74aae",
-      pass: "e1c2632ca9942b"
+      user: process.env.MAILTRAP_USER,
+      pass: process.env.MAILTRAP_PASS
     }
   });
   const novaSenha = crypto.randomBytes(4).toString('hex');
@@ -147,7 +147,7 @@ const forgotPass = async (req, res) => {
     id: user.id
   }).execute();
   return res.json({
-    message: 'aqi porra'
+    message: 'senha criada e enviado para o mailtrap'
   });
 };
 
