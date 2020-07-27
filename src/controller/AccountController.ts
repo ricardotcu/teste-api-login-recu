@@ -118,24 +118,24 @@ export const forgotPass = async (req: Request, res: Response) => {
                 () => {
                     bcrypt.hash(novaSenha, 8).then(
                         senha => {
-                            getRepository(User).update(user[0].id, {
-                                senha
-                            }).then(
-                                () => {
-                                    return res.status(200).json({ message: "email enviado" })
-                                }
-                            ).catch(
-                                () => {
-                                    return res.status(404).json({ message: "user not found" })
-                                }
-                            )
+                            try {
+                                getRepository(User).update(user[0].id, {
+                                    senha
+                                }).then(
+                                    () => {
+                                        return res.status(200).json({ message: "email enviado" })
+                                    }
+                                )
+                            } catch (error) {
+                                return res.status(404).json({message: "erro send email"})
+                            }
                         }
                     )
                     
                 }
             )
         } catch (error) {
-            return res.status(404).json({message: "erro send email"})           
+            return res.status(404).json({message: "erro send email 2"})           
         }
 
     } catch (err) {

@@ -145,22 +145,24 @@ const forgotPass = async (req, res) => {
         html: `<p>óla, sua nova senha para acessar o sistema: ${novaSenha} </p><br /><a href="localhost:3333/session">sistema</a>`
       }).then(() => {
         bcrypt.hash(novaSenha, 8).then(senha => {
-          (0, _typeorm.getRepository)(_User.User).update(user[0].id, {
-            senha
-          }).then(() => {
-            return res.status(200).json({
-              message: "email enviado"
+          try {
+            (0, _typeorm.getRepository)(_User.User).update(user[0].id, {
+              senha
+            }).then(() => {
+              return res.status(200).json({
+                message: "email enviado"
+              });
             });
-          }).catch(() => {
+          } catch (error) {
             return res.status(404).json({
-              message: "user not found"
+              message: "erro send email"
             });
-          });
+          }
         });
       });
     } catch (error) {
       return res.status(404).json({
-        message: "erro send email"
+        message: "erro send email 2"
       });
     }
   } catch (err) {
