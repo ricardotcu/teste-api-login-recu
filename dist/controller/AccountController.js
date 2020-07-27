@@ -120,56 +120,29 @@ const forgotPass = async (req, res) => {
   const {
     email
   } = req.body;
-
-  try {
-    const user = await (0, _typeorm.getRepository)(_User.User).findOne({
-      where: {
-        email
-      }
-    });
-    const transporte = nodemailer.createTransport({
-      host: "smtp.mailtrap.io",
-      port: 2525,
-      auth: {
-        user: "28b78cc0f74aae",
-        pass: "e1c2632ca9942b"
-      }
-    });
-    const novaSenha = crypto.randomBytes(4).toString('hex');
-
-    try {
-      await transporte.sendMail({
-        from: 'administrador <dc1d1eeef9-eb0505@inbox.mailtrap.io>',
-        to: email,
-        subject: "recuperação de senha",
-        html: `<p>óla, sua nova senha para acessar o sistema: ${novaSenha} </p><br /><a href="localhost:3333/session">sistema</a>`
-      }).then(() => {
-        bcrypt.hash(novaSenha, 8).then(senha => {
-          try {
-            (0, _typeorm.getRepository)(_User.User).update(user[0].id, {
-              senha
-            }).then(() => {
-              return res.status(200).json({
-                message: "email enviado"
-              });
-            });
-          } catch (error) {
-            return res.status(404).json({
-              message: "erro send email"
-            });
-          }
-        });
-      });
-    } catch (error) {
-      return res.status(404).json({
-        message: "erro send email 2"
-      });
+  const user = await (0, _typeorm.getRepository)(_User.User).findOne({
+    where: {
+      email
     }
-  } catch (err) {
-    return res.status(402).json({
-      message: "erro user controller"
-    });
-  }
+  });
+  const transporte = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "28b78cc0f74aae",
+      pass: "e1c2632ca9942b"
+    }
+  });
+  const novaSenha = crypto.randomBytes(4).toString('hex');
+  await transporte.sendMail({
+    from: 'administrador <dc1d1eeef9-eb0505@inbox.mailtrap.io>',
+    to: email,
+    subject: "recuperação de senha",
+    html: `<p>óla, sua nova senha para acessar o sistema: ${novaSenha} </p><br /><a href="localhost:3333/session">sistema</a>`
+  });
+  return res.json({
+    message: 'aqi porra'
+  });
 };
 
 exports.forgotPass = forgotPass;
