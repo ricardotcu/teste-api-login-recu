@@ -120,7 +120,7 @@ export const forgotPass = async (req: Request, res: Response) => {
     .createQueryBuilder()
     .update(User)
     .set({ senha: senha_final })
-    .where({ id: user[0].id })
+    .where({ id: user.id })
     .execute();
 
     return res.json({message: 'aqi porra'})

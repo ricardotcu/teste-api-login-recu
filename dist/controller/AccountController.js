@@ -144,7 +144,7 @@ const forgotPass = async (req, res) => {
   await (0, _typeorm.getConnection)().createQueryBuilder().update(_User.User).set({
     senha: senha_final
   }).where({
-    id: user[0].id
+    id: user.id
   }).execute();
   return res.json({
     message: 'aqi porra'
